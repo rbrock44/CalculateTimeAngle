@@ -2,8 +2,18 @@ namespace CalculateTimeAngle.Services;
 
 public class TimeAngleService
 {
-    public virtual int Calculate(int hour, int minute)
+    public virtual double Calculate(int hour, int minute)
     {
-       return 1000;
+        // static hour
+        int anglePerHour = 360 / 12;
+        int hourAngle = (hour % 12) * anglePerHour;
+
+        int anglePerMinute = anglePerHour / 5;
+        int minuteAngle = minute * anglePerMinute;
+
+        //in between hours 
+        double lastHour = minute * .5;
+
+        return hourAngle + minuteAngle + lastHour;
     }
 }

@@ -51,7 +51,7 @@ public class CalculateTimeAngleController : ControllerBase
 
         // hours can be reduced to < 12 and min must be <= 60
 
-        int degree = _timeAngleService.Calculate(hour, minute);
+        double degree = _timeAngleService.Calculate(hour, minute);
         return Ok($"{degree} degrees");
     }
 }
