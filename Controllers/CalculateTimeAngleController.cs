@@ -36,6 +36,19 @@ public class CalculateTimeAngleController : ControllerBase
 
     private ActionResult<string> ProcessValues(int hour, int minute)
     {
+        int newHour = hour;
+        if (hour > 24) {
+            return BadRequest("Invalid hour format, can't be greater than 24");
+        } else if (hour > 12) {
+            // army time, reduce to am/pm time
+            newHour = newHour - 12;
+        }
+
+        if (minute > 60) {
+            return BadRequest("Invalid minute format, can't be greater than 60");
+        }
+
+
         // hours can be reduced to < 12 and min must be <= 60
 
         int degree = _timeAngleService.Calculate(hour, minute);

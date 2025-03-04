@@ -29,24 +29,55 @@ public class CalculateTimeAngleControllerTests
         _mockService.Setup(s => s.Calculate(3, 15)).Returns(7);
 
         var result = _controller.Get("03:15");
-
-        Xunit.Assert.NotNull(result.Result);
-        Xunit.Assert.IsType<OkObjectResult>(result.Result);
-
-        var okResult = result.Result as OkObjectResult;
-
-        Console.WriteLine($"Result Value: {okResult.Value}");
-
-        Xunit.Assert.NotNull(okResult);
-        Xunit.Assert.Equal(200, okResult.StatusCode);
-        Xunit.Assert.Equal("7 degrees", okResult.Value);
+        ExpectGoodResult(result, "7 degrees");
     }
 
     [TestMethod]
     public void Get_WithInvalidString_ReturnsBadRequest()
     {
         var result = _controller.Get("invalid");
+        ExpectBadResult(result, "Invalid time format use H:m, HH:mm or combination");
+    }
 
+    [TestMethod]
+    public void Get_WithInvalidHourString_ReturnsBadRequest()
+    {
+        var result = _controller.Get("25:25");
+        ExpectBadResult(result, "Invalid hour format, can't be greater than 24");
+    }
+
+    [TestMethod]
+    public void Get_WithInvalidMinuteString_ReturnsBadRequest()
+    {
+        var result = _controller.Get("5:65");
+        ExpectBadResult(result, "Invalid minute format, can't be greater than 60");
+    }
+
+    [TestMethod]
+    public void Get_WithValidInts_ReturnsCorrectAngle()
+    {
+        _mockService.Setup(s => s.Calculate(3, 15)).Returns(10);
+
+        var result = _controller.Get(3, 15);
+        ExpectGoodResult(result, "10 degrees");
+    }
+
+    [TestMethod]
+    public void Get_WithInvalidHourInt_ReturnsBadRequest()
+    {
+        var result = _controller.Get(25, 25);
+        ExpectBadResult(result, "Invalid hour format, can't be greater than 24");
+    }
+
+    [TestMethod]
+    public void Get_WithInvalidMinuteInt_ReturnsBadRequest()
+    {
+        var result = _controller.Get(5, 65);
+        ExpectBadResult(result, "Invalid minute format, can't be greater than 60");
+    }
+
+    private void ExpectBadResult(ActionResult<string> result, string message) 
+    {
         Xunit.Assert.NotNull(result.Result);
         Xunit.Assert.IsType<BadRequestObjectResult>(result.Result);
 
@@ -54,6 +85,18 @@ public class CalculateTimeAngleControllerTests
 
         Xunit.Assert.NotNull(badResult);
         Xunit.Assert.Equal(400, badResult.StatusCode);
-        Xunit.Assert.Equal("Invalid time format use H:m, HH:mm or combination", badResult.Value);
+        Xunit.Assert.Equal(message, badResult.Value);
+    }
+
+    private void ExpectGoodResult(ActionResult<string> result, string value) 
+    {
+        Xunit.Assert.NotNull(result.Result);
+        Xunit.Assert.IsType<OkObjectResult>(result.Result);
+
+        var okResult = result.Result as OkObjectResult;
+
+        Xunit.Assert.NotNull(okResult);
+        Xunit.Assert.Equal(200, okResult.StatusCode);
+        Xunit.Assert.Equal(value, okResult.Value);
     }
 }

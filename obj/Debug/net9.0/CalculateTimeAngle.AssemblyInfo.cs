@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CalculateTimeAngle")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9f80cb1cb43222c9d61f61b8014f3fcd9aab2a76")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+52451ec063e61b04895b6cc2e1dfed6b4bd4ad67")]
 [assembly: System.Reflection.AssemblyProductAttribute("CalculateTimeAngle")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CalculateTimeAngle")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
